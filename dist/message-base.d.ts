@@ -1,4 +1,8 @@
 import type { Int } from "./int-type";
+interface Schedule {
+    from?: Int;
+    to?: Int;
+}
 interface PDFObject {
     /**
      * Page number for new posts and page id for edited posts
@@ -31,9 +35,23 @@ declare abstract class MessageBase {
     protected edit: boolean;
     private title;
     private message;
+    /**
+     *
+     * @type {Int}
+     * @private
+     * @deprecated since version 1.1.0
+     */
     private durationFrom;
+    /**
+     *
+     * @type {Int}
+     * @private
+     * @deprecated since version 1.1.0
+     */
     private durationTo;
     private displayTime;
+    schedule: Schedule[];
+    scheduleIsSet: boolean;
     pages: PDFPage[];
     titleEdited: boolean;
     messageEdited: boolean;
@@ -56,18 +74,38 @@ declare abstract class MessageBase {
      *
      */
     setMessage(message: string): this;
+    /**
+     * Get current schedule
+     *
+     * @returns {Schedule[]}
+     */
+    getSchedule(): Schedule[];
+    /**
+     * Set schedule
+     *
+     * @param {Schedule[]} schedule
+     * @returns {this}
+     */
+    setSchedule(schedule: Schedule[]): this;
+    /**
+     *
+     * @returns {number}
+     * @deprecated since version 1.1.0
+     */
     getDurationFrom(): number;
     /**
      * @param {int} durationFrom unix epoch, use 0 to unset
+     * @deprecated since version 1.1.0
      */
     setDurationFrom(durationFrom: Int): this;
     /**
      * Return duration To
+     * @deprecated since version 1.1.0
      */
     getDurationTo(): number;
     /**
      * @param {int} durationTo unix epoch, use 0 to unset
-     *
+     * @deprecated since version 1.1.0
      */
     setDurationTo(durationTo: Int): this;
     /**
@@ -115,4 +153,4 @@ declare class EditMessage extends MessageBase {
     constructor(messageId: Int);
     validate(): boolean;
 }
-export { PostMessage, EditMessage, PDFPage, PDFObject };
+export { PostMessage, EditMessage, PDFPage, PDFObject, Schedule };

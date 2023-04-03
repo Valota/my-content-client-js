@@ -86,7 +86,7 @@ class MyContentClient {
             });
             //formData.append('file', fs.createReadStream('foo.txt'));
             //formData.append('blah', 42);
-            return node_fetch_1.default(`${this.url}/${this.version}/${endpoint}`, Object.assign(Object.assign({ method: method }, (hasData ? { body: formData } : {})), { headers: Object.assign(Object.assign({}, (hasData ? formData.getHeaders() : {})), { 'x-api-key': this.apiKey, 'x-api-hash': hash }) })).then((res) => {
+            return (0, node_fetch_1.default)(`${this.url}/${this.version}/${endpoint}`, Object.assign(Object.assign({ method: method }, (hasData ? { body: formData } : {})), { headers: Object.assign(Object.assign({}, (hasData ? formData.getHeaders() : {})), { 'x-api-key': this.apiKey, 'x-api-hash': hash }) })).then((res) => {
                 if (res.ok) {
                     return res.json();
                 }
@@ -199,6 +199,9 @@ class MyContentClient {
                 md5 = yield md5File(media);
             }
             const hashStr = hash(this.apiSecret + md5 + title + msg);
+            if (postMessage.scheduleIsSet) {
+                post.push({ name: 'schedule', contents: JSON.stringify(postMessage.getSchedule()) });
+            }
             const durationFrom = postMessage.getDurationFrom();
             if (durationFrom > 0) {
                 post.push({
@@ -265,6 +268,9 @@ class MyContentClient {
                 });
             }
             const hashStr = hash(this.apiSecret + editMessage.messageId);
+            if (editMessage.scheduleIsSet) {
+                post.push({ name: 'schedule', contents: JSON.stringify(editMessage.getSchedule()) });
+            }
             const durationFrom = editMessage.getDurationFrom();
             if (durationFrom >= 0) {
                 post.push({

@@ -43,8 +43,8 @@ post.setTitle("Title of the post");
 post.setMessage("Message of the post");
 post.setMedia('/abs/path/to/media.jpg');
 post.setDisplayTime(10);//seconds
-post.setDurationFrom(1609855473);//seconds since unix epoch 
-post.setDurationTo(1609865473);//seconds since unix epoch 
+post.setSchedule([{from:1735693261, to:1735729871}]);
+
 // All are optional, but post has to have at least one of title, message or media.
 client.post(post).then(res => {
 	console.log(res);
@@ -56,12 +56,11 @@ client.post(post).then(res => {
 
 // Edit
 
-const edit = new EditMessage();
+const edit = new EditMessage(1234);
 edit.setTitle("Edited title");// empty string unsets
 edit.setMessage("Edited message");// empty string unsets
 edit.setDisplayTime(0);// 0 unsets
-edit.setDurationFrom(0);// 0 unsets 
-edit.setDurationTo(0);// 0 unsets 
+edit.setSchedule([]); //empty array unsets schedule
 // All are optional. Only changes the values that are set.
 client.edit(edit).then(res => {
 	console.log(res);

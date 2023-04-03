@@ -13,9 +13,14 @@ import type {Int} from "./int-type";
  * @param {int} displayTime
  */
 function formatDisplayTime(displayTime: Int): Int {
-	return Math.min(Math.max(displayTime, 4), 30) as Int;
+	return Math.max(displayTime, 4) as Int;
 }
 
+
+interface Schedule {
+	from?: Int;
+	to?: Int;
+}
 
 interface PDFObject {
 	/**
@@ -86,11 +91,27 @@ abstract class MessageBase {
 
 	private message: string = '';
 
+	/**
+	 *
+	 * @type {Int}
+	 * @private
+	 * @deprecated since version 1.1.0
+	 */
 	private durationFrom: Int = -1 as Int;
 
+	/**
+	 *
+	 * @type {Int}
+	 * @private
+	 * @deprecated since version 1.1.0
+	 */
 	private durationTo: Int = -1 as Int;
 
 	private displayTime: Int = -1 as Int;
+
+	public schedule: Schedule[] = [];
+
+	public scheduleIsSet:boolean = false;
 
 	public pages: PDFPage[] = [];
 
@@ -148,12 +169,40 @@ abstract class MessageBase {
 		return this;
 	}
 
+
+	/**
+	 * Get current schedule
+	 *
+	 * @returns {Schedule[]}
+	 */
+	getSchedule(): Schedule[] {
+		return this.schedule;
+	}
+
+	/**
+	 * Set schedule
+	 *
+	 * @param {Schedule[]} schedule
+	 * @returns {this}
+	 */
+	setSchedule(schedule: Schedule[]): this {
+		this.schedule=schedule;
+		this.scheduleIsSet =true;
+		return this;
+	}
+
+	/**
+	 *
+	 * @returns {number}
+	 * @deprecated since version 1.1.0
+	 */
 	getDurationFrom(): number {
 		return this.durationFrom;
 	}
 
 	/**
 	 * @param {int} durationFrom unix epoch, use 0 to unset
+	 * @deprecated since version 1.1.0
 	 */
 	setDurationFrom(durationFrom: Int): this {
 		if (durationFrom >= 0) {
@@ -165,6 +214,7 @@ abstract class MessageBase {
 
 	/**
 	 * Return duration To
+	 * @deprecated since version 1.1.0
 	 */
 	getDurationTo(): number {
 		return this.durationTo;
@@ -172,7 +222,7 @@ abstract class MessageBase {
 
 	/**
 	 * @param {int} durationTo unix epoch, use 0 to unset
-	 *
+	 * @deprecated since version 1.1.0
 	 */
 	setDurationTo(durationTo: Int): this {
 
@@ -305,4 +355,4 @@ class EditMessage extends MessageBase {
 }
 
 
-export {PostMessage, EditMessage, PDFPage, PDFObject};
+export {PostMessage, EditMessage, PDFPage, PDFObject, Schedule};
