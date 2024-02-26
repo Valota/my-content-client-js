@@ -5,7 +5,7 @@ import * as FormData from 'form-data';
 import fetch from 'node-fetch';
 import * as fs from 'fs';
 
-import {PostMessage, EditMessage, PDFPage, PDFObject} from './message-base';
+import {PostMessage, EditMessage, PDFPage, PDFObject, Schedule} from './message-base';
 import * as md5File from 'md5-file';
 
 import type {Int} from "./int-type";
@@ -282,6 +282,10 @@ class MyContentClient {
 
 		const hashStr = hash(this.apiSecret + md5 + title + msg);
 
+		if(postMessage.scheduleIsSet) {
+			post.push({name:'schedule', contents:JSON.stringify(postMessage.getSchedule())});
+		}
+
 		const durationFrom = postMessage.getDurationFrom();
 		if (durationFrom > 0) {
 			post.push({
@@ -359,6 +363,10 @@ class MyContentClient {
 
 
 		const hashStr = hash(this.apiSecret + editMessage.messageId);
+
+		if(editMessage.scheduleIsSet) {
+			post.push({name:'schedule', contents:JSON.stringify(editMessage.getSchedule())});
+		}
 
 		const durationFrom = editMessage.getDurationFrom();
 		if (durationFrom >= 0) {

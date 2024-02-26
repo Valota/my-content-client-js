@@ -11,7 +11,7 @@ const mime = require("mime");
  * @param {int} displayTime
  */
 function formatDisplayTime(displayTime) {
-    return Math.min(Math.max(displayTime, 4), 30);
+    return Math.max(displayTime, 4);
 }
 class PDFPage {
     /**
@@ -55,9 +55,23 @@ class MessageBase {
         this.edit = false;
         this.title = '';
         this.message = '';
+        /**
+         *
+         * @type {Int}
+         * @private
+         * @deprecated since version 1.1.0
+         */
         this.durationFrom = -1;
+        /**
+         *
+         * @type {Int}
+         * @private
+         * @deprecated since version 1.1.0
+         */
         this.durationTo = -1;
         this.displayTime = -1;
+        this.schedule = [];
+        this.scheduleIsSet = false;
         this.pages = [];
         this.titleEdited = false;
         this.messageEdited = false;
@@ -76,7 +90,7 @@ class MessageBase {
      */
     setTitle(title) {
         this.titleEdited = true;
-        title = html_special_chars_1.default(title.trim()).substr(0, 512);
+        title = (0, html_special_chars_1.default)(title.trim()).substr(0, 512);
         this.title = title;
         return this;
     }
@@ -105,11 +119,36 @@ class MessageBase {
         }
         return this;
     }
+    /**
+     * Get current schedule
+     *
+     * @returns {Schedule[]}
+     */
+    getSchedule() {
+        return this.schedule;
+    }
+    /**
+     * Set schedule
+     *
+     * @param {Schedule[]} schedule
+     * @returns {this}
+     */
+    setSchedule(schedule) {
+        this.schedule = schedule;
+        this.scheduleIsSet = true;
+        return this;
+    }
+    /**
+     *
+     * @returns {number}
+     * @deprecated since version 1.1.0
+     */
     getDurationFrom() {
         return this.durationFrom;
     }
     /**
      * @param {int} durationFrom unix epoch, use 0 to unset
+     * @deprecated since version 1.1.0
      */
     setDurationFrom(durationFrom) {
         if (durationFrom >= 0) {
@@ -119,13 +158,14 @@ class MessageBase {
     }
     /**
      * Return duration To
+     * @deprecated since version 1.1.0
      */
     getDurationTo() {
         return this.durationTo;
     }
     /**
      * @param {int} durationTo unix epoch, use 0 to unset
-     *
+     * @deprecated since version 1.1.0
      */
     setDurationTo(durationTo) {
         if (durationTo >= 0) {
