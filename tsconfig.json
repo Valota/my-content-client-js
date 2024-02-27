@@ -1,15 +1,16 @@
 {
-    "compilerOptions": { 
-      "target": "es6",
-      "module": "commonjs",
-      "strict": true, 
-      "declaration": true,
-      "outDir": "./dist",
-      "allowSyntheticDefaultImports": true,
-    },
-    "exclude": [
-        "tests",
-        "dist",
-        "node_modules"
-    ]
-  }
+  "compilerOptions": {
+	"target": "es6",
+	"module": "node16",
+	"moduleResolution": "node16",
+	"strict": true,
+	"declaration": true,
+	"outDir": "./dist",
+	"allowSyntheticDefaultImports": true
+  },
+  "exclude": [
+	"tests",
+	"dist",
+	"node_modules"
+  ]
+}

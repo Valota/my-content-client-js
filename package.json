@@ -1,67 +1,70 @@
 {
- "name": "@valota/my-content-client",
- "version": "1.1.0",
- "description": "A Javascript client for Valotalive digital signage My Content API.",
- "main": "./dist/my-content-client.js",
- "scripts": {
-  "build": "tsc",
-  "watch": "tsc --watch",
-  "test": "mocha"
- },
- "keywords": [
-  "ds",
-  "digital signage",
-  "signage",
-  "info screen",
-  "api",
-  "valota",
-  "valotalive",
-  "workplace digital signage"
- ],
- "author": {
-  "name": "Jukka Korpelainen",
-  "email": "jukka@valota.live"
- },
- "contributors": [
-  {
-   "name": "Mikko Korpelainen",
-   "email": "mikko@valota.live"
-  }
- ],
- "files": [
-  "dist",
-  "LICENSE",
-  "README.md"
- ],
- "license": "MIT",
- "devDependencies": {
-  "@types/crypto-js": "^4.0.1",
-  "@types/mime": "^2.0.3",
-  "@types/node": "^14.14.22",
-  "@types/node-fetch": "^2.5.8",
-  "lorem-ipsum": "^2.0.3",
-  "mocha": "^8.2.1",
-  "should": "^13.2.3",
-  "typescript": "^4.1.3"
- },
- "types": "./dist/my-content-client.d.ts",
- "dependencies": {
-  "crypto-js": "^4.0.0",
-  "form-data": "^3.0.0",
-  "md5-file": "^5.0.0",
-  "mime": "^2.5.0",
-  "node-fetch": "^2.6.1",
-  "striptags": "^3.1.1"
- },
- "publishConfig": {
-  "access": "public"
- },
- "repository": {
-  "type": "git",
-  "url": "https://github.com/Valota/my-content-client-js.git"
- },
- "bugs": {
-  "url": "https://github.com/Valota/my-content-client-js/issues"
- },
- "homepage": "https://github.com/Valota/my-content-client-js"
+  "name": "@valota/my-content-client",
+  "version": "2.0.0",
+  "description": "A Javascript client for Valotalive digital signage My Content API.",
+  "type": "module",
+  "exports": "./dist/my-content-client.js",
+  "scripts": {
+	"build": "tsc",
+	"watch": "tsc --watch",
+	"test": "mocha"
+  },
+  "engines": {
+	"node": ">=16"
+  },
+  "keywords": [
+	"ds",
+	"digital signage",
+	"signage",
+	"info screen",
+	"api",
+	"valota",
+	"valotalive",
+	"workplace digital signage"
+  ],
+  "author": {
+	"name": "Jukka Korpelainen",
+	"email": "jukka@valota.live"
+  },
+  "contributors": [
+	{
+	  "name": "Mikko Korpelainen",
+	  "email": "mikko@valota.live"
+	}
+  ],
+  "files": [
+	"dist",
+	"LICENSE",
+	"README.md"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+	"@types/crypto-js": "^4.0.1",
+	"@types/node": "^20.0.0",
+	"lorem-ipsum": "^2.0.3",
+	"mocha": "^10.0.0",
+	"should": "^13.2.3",
+	"typescript": "^5.0.0",
+	"https-proxy-agent": "^7.0.4"
+  },
+  "types": "./dist/my-content-client.d.ts",
+  "dependencies": {
+	"crypto-js": "^4.0.0",
+	"form-data": "^4.0.0",
+	"md5-file": "^5.0.0",
+	"mime": "^4.0.0",
+	"node-fetch": "^3.0.0",
+	"striptags": "^3.1.1"
+  },
+  "publishConfig": {
+	"access": "public"
+  },
+  "repository": {
+	"type": "git",
+	"url": "https://github.com/Valota/my-content-client-js.git"
+  },
+  "bugs": {
+	"url": "https://github.com/Valota/my-content-client-js/issues"
+  },
+  "homepage": "https://github.com/Valota/my-content-client-js"
 }

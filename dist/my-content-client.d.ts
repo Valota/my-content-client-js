@@ -1,6 +1,6 @@
-import { PostMessage, EditMessage, PDFPage } from './message-base';
-import type { Int } from "./int-type";
-declare type HttpMethod = "POST" | "GET" | "DELETE" | "PUT";
+import { PostMessage, EditMessage, PDFPage } from './message-base.js';
+import type { Int } from "./int-type.js";
+type HttpMethod = "POST" | "GET" | "DELETE" | "PUT";
 interface ParamArgument {
     name: string;
     contents: string | number;
@@ -64,6 +64,18 @@ declare class MyContentClient {
      * @var string
      */
     private readonly apiSecret;
+    /**
+     * These are added to fetch (node-fetch) request. e.g. {"x-additional-header":"value"}
+     */
+    fetchRequestHeaders: {
+        [key: string]: string;
+    };
+    /**
+     * Additional options to be appended to all fetches (node-fetch). e.g.
+     */
+    fetchOptions: {
+        [key: string]: any;
+    };
     /**
      * MyContentClient constructor.
      *

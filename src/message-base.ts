@@ -1,11 +1,11 @@
-import * as striptags from "striptags";
-import htmlSpecialChars from "./html-special-chars";
+import  striptags from "striptags";
+import htmlSpecialChars from "./html-special-chars.js";
 
-import * as fs from 'fs';
+import fs from 'node:fs';
 
-import * as mime from "mime";
+import mime from "mime";
 
-import type {Int} from "./int-type";
+import type {Int} from "./int-type.js";
 
 /**
  * Format display time

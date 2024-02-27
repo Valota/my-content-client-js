@@ -1,4 +1,4 @@
-exports.config = {
+export default {
 _API_URL:'', // empty for default
 _API_VERSION:'', // empty for default
 _API_KEY:'',

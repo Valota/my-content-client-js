@@ -19,7 +19,7 @@ Use [npm](https://www.npmjs.com/)
 ## Usage
 
 ```javascript
-const {MyContentClient, PostMessage, PDFPage} = require('@valota/my-content-client');
+import {MyContentClient, PostMessage, PDFPage} from '@valota/my-content-client';
 
 // Initialize your client
 const client = new MyContentClient(API_KEY, API_SECRET);

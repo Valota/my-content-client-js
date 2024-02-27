@@ -1,14 +1,14 @@
-import * as sha256 from 'crypto-js/sha256';
-import * as EncHex from 'crypto-js/enc-hex';
+import sha256 from 'crypto-js/sha256.js';
+import EncHex from 'crypto-js/enc-hex.js';
 
-import * as FormData from 'form-data';
+import FormData from 'form-data';
 import fetch from 'node-fetch';
-import * as fs from 'fs';
+import fs from 'node:fs';
 
-import {PostMessage, EditMessage, PDFPage, PDFObject, Schedule} from './message-base';
-import * as md5File from 'md5-file';
+import {PostMessage, EditMessage, PDFPage, PDFObject, Schedule} from './message-base.js';
+import md5File from 'md5-file';
 
-import type {Int} from "./int-type";
+import type {Int} from "./int-type.js";
 
 type HttpMethod = "POST" | "GET" | "DELETE" | "PUT";
 
@@ -89,6 +89,16 @@ class MyContentClient {
 	 */
 	private readonly apiSecret: string;
 
+	/**
+	 * These are added to fetch (node-fetch) request. e.g. {"x-additional-header":"value"}
+	 */
+	public fetchRequestHeaders: {[key:string]:string} = {};
+
+	/**
+	 * Additional options to be appended to all fetches (node-fetch). e.g.
+	 */
+	public fetchOptions: {[key:string]:any} = {};
+
 
 	/**
 	 * MyContentClient constructor.
@@ -150,9 +160,11 @@ class MyContentClient {
 
 
 		return fetch(`${this.url}/${this.version}/${endpoint}`, {
+			...this.fetchOptions,
 			method: method,
 			...(hasData ? {body:formData} : {} ),
 			headers: {
+				...this.fetchRequestHeaders,
 				...(hasData ? formData.getHeaders() : {}),
 				'x-api-key':this.apiKey,
 				'x-api-hash':hash

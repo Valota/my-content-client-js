@@ -1,7 +1,25 @@
-import striptags from "striptags";
-import htmlSpecialChars from "./html-special-chars.js";
-import fs from 'node:fs';
-import mime from "mime";
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PDFPage = exports.EditMessage = exports.PostMessage = void 0;
+var striptags = require("striptags");
+var html_special_chars_1 = require("./html-special-chars");
+var fs = require("fs");
+var mime_1 = require("mime");
 /**
  * Format display time
  *
@@ -10,7 +28,7 @@ import mime from "mime";
 function formatDisplayTime(displayTime) {
     return Math.max(displayTime, 4);
 }
-class PDFPage {
+var PDFPage = /** @class */ (function () {
     /**
      * PDFPage constructor.
      *
@@ -18,7 +36,9 @@ class PDFPage {
      * @param int $displayTime Display time of the page. Set to 0 to unset
      * @param bool $visible should this page be visible?
      */
-    constructor(pageId, displayTime = -1, visible = true) {
+    function PDFPage(pageId, displayTime, visible) {
+        if (displayTime === void 0) { displayTime = -1; }
+        if (visible === void 0) { visible = true; }
         this.displayTime = -1;
         this.visible = true;
         this.pageId = pageId;
@@ -30,8 +50,9 @@ class PDFPage {
         }
         this.visible = visible;
     }
-    toObject(edit = false) {
-        const ret = {};
+    PDFPage.prototype.toObject = function (edit) {
+        if (edit === void 0) { edit = false; }
+        var ret = {};
         if (edit) {
             ret.page_id = this.pageId;
         }
@@ -43,10 +64,12 @@ class PDFPage {
         }
         ret.visible = this.visible;
         return ret;
-    }
-}
-class MessageBase {
-    constructor() {
+    };
+    return PDFPage;
+}());
+exports.PDFPage = PDFPage;
+var MessageBase = /** @class */ (function () {
+    function MessageBase() {
         this.ALLOWED_TAGS = "<b><strong><div><i><u><strike><s><del><ul><ol><li><br><em><code>";
         this.edit = false;
         this.title = '';
@@ -75,37 +98,37 @@ class MessageBase {
     /**
      * @return string
      */
-    getTitle() {
+    MessageBase.prototype.getTitle = function () {
         return this.title;
-    }
+    };
     /**
      * Sets the title
      *
      * @param {string} title
      *
      */
-    setTitle(title) {
+    MessageBase.prototype.setTitle = function (title) {
         this.titleEdited = true;
-        title = htmlSpecialChars(title.trim()).substr(0, 512);
+        title = (0, html_special_chars_1.default)(title.trim()).substr(0, 512);
         this.title = title;
         return this;
-    }
-    getMessage() {
+    };
+    MessageBase.prototype.getMessage = function () {
         return this.message;
-    }
+    };
     /**
      * Sets the message
      *
      * @param {string} message
      *
      */
-    setMessage(message) {
+    MessageBase.prototype.setMessage = function (message) {
         this.messageEdited = true;
         if (!message) {
             this.message = "";
         }
         else {
-            const isEmpty = !striptags(message).trim();
+            var isEmpty = !striptags(message).trim();
             if (isEmpty) {
                 this.message = "";
             }
@@ -114,68 +137,68 @@ class MessageBase {
             }
         }
         return this;
-    }
+    };
     /**
      * Get current schedule
      *
      * @returns {Schedule[]}
      */
-    getSchedule() {
+    MessageBase.prototype.getSchedule = function () {
         return this.schedule;
-    }
+    };
     /**
      * Set schedule
      *
      * @param {Schedule[]} schedule
      * @returns {this}
      */
-    setSchedule(schedule) {
+    MessageBase.prototype.setSchedule = function (schedule) {
         this.schedule = schedule;
         this.scheduleIsSet = true;
         return this;
-    }
+    };
     /**
      *
      * @returns {number}
      * @deprecated since version 1.1.0
      */
-    getDurationFrom() {
+    MessageBase.prototype.getDurationFrom = function () {
         return this.durationFrom;
-    }
+    };
     /**
      * @param {int} durationFrom unix epoch, use 0 to unset
      * @deprecated since version 1.1.0
      */
-    setDurationFrom(durationFrom) {
+    MessageBase.prototype.setDurationFrom = function (durationFrom) {
         if (durationFrom >= 0) {
             this.durationFrom = durationFrom;
         }
         return this;
-    }
+    };
     /**
      * Return duration To
      * @deprecated since version 1.1.0
      */
-    getDurationTo() {
+    MessageBase.prototype.getDurationTo = function () {
         return this.durationTo;
-    }
+    };
     /**
      * @param {int} durationTo unix epoch, use 0 to unset
      * @deprecated since version 1.1.0
      */
-    setDurationTo(durationTo) {
+    MessageBase.prototype.setDurationTo = function (durationTo) {
         if (durationTo >= 0) {
             this.durationTo = durationTo;
         }
         return this;
-    }
-    getDisplayTime() {
+    };
+    MessageBase.prototype.getDisplayTime = function () {
         return this.displayTime;
-    }
+    };
     /**
      * @param {int} displayTime use 0 to unset
      */
-    setDisplayTime(displayTime) {
+    MessageBase.prototype.setDisplayTime = function (displayTime) {
         if (displayTime === 0) {
             this.displayTime = 0;
         }
@@ -183,7 +206,7 @@ class MessageBase {
             this.displayTime = formatDisplayTime(displayTime);
         }
         return this;
-    }
+    };
     /**
      * Add new page configuration
      *
@@ -191,10 +214,10 @@ class MessageBase {
      *
      * @return this
      */
-    addPage(page) {
+    MessageBase.prototype.addPage = function (page) {
         this.pages.push(page);
         return this;
-    }
+    };
     /**
      * Remove page configuration
      *
@@ -202,63 +225,71 @@ class MessageBase {
      *
      * @return this
      */
-    removePage(pageId) {
-        for (let i = 0; i < this.pages.length; ++i) {
+    MessageBase.prototype.removePage = function (pageId) {
+        for (var i = 0; i < this.pages.length; ++i) {
             if (this.pages[i].pageId === pageId) {
                 this.pages.splice(i, 1);
                 break;
             }
         }
         return this;
+    };
+    return MessageBase;
+}());
+var PostMessage = /** @class */ (function (_super) {
+    __extends(PostMessage, _super);
+    function PostMessage() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.media = '';
+        return _this;
     }
-}
-class PostMessage extends MessageBase {
-    constructor() {
-        super(...arguments);
-        this.media = '';
-    }
-    validate() {
+    PostMessage.prototype.validate = function () {
         return !!(this.getTitle() || this.getMessage() || this.getMedia());
-    }
+    };
     /**
      * get media file path
      */
-    getMedia() {
+    PostMessage.prototype.getMedia = function () {
         return this.media;
-    }
+    };
     /**
      * Set media for the post
      * @param {string} absFilepath abs filepath to media /path/to/image.jpg
      */
-    setMedia(absFilepath) {
-        const media = absFilepath.trim();
+    PostMessage.prototype.setMedia = function (absFilepath) {
+        var media = absFilepath.trim();
         if (!media) {
             this.media = '';
         }
         else {
             if (!fs.existsSync(media)) {
-                throw `File not found: ${media}`;
+                throw "File not found: ".concat(media);
             }
-            let mimeType = mime.getType(media);
+            var mimeType = mime_1.default.getType(media);
             if (mimeType === null) {
-                throw `Invalid mimetype for the media file, we accept image/*, video/* and application/pdf`;
+                throw "Invalid mimetype for the media file, we accept image/*, video/* and application/pdf";
             }
             if (!mimeType.startsWith('image/') && !mimeType.startsWith('video/') && mimeType !== "application/pdf") {
-                throw `Invalid mimetype for the media file, we accept image/*, video/* and application/pdf: ${mime}`;
+                throw "Invalid mimetype for the media file, we accept image/*, video/* and application/pdf: ".concat(mime_1.default);
             }
             this.media = media;
         }
         return this;
+    };
+    return PostMessage;
+}(MessageBase));
+exports.PostMessage = PostMessage;
+var EditMessage = /** @class */ (function (_super) {
+    __extends(EditMessage, _super);
+    function EditMessage(messageId) {
+        var _this = _super.call(this) || this;
+        _this.edit = true;
+        _this.messageId = messageId;
+        return _this;
     }
-}
-class EditMessage extends MessageBase {
-    constructor(messageId) {
-        super();
-        this.edit = true;
-        this.messageId = messageId;
-    }
-    validate() {
+    EditMessage.prototype.validate = function () {
         return true;
-    }
-}
-export { PostMessage, EditMessage, PDFPage };
+    };
+    return EditMessage;
+}(MessageBase));
+exports.EditMessage = EditMessage;

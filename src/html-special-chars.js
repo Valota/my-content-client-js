@@ -1,4 +1,6 @@
-export default function htmlSpecialChars(str) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+function htmlSpecialChars(str) {
     return str
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
@@ -6,3 +8,4 @@ export default function htmlSpecialChars(str) {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 }
+exports.default = htmlSpecialChars;

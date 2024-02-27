@@ -1,4 +1,4 @@
-import type { Int } from "./int-type";
+import type { Int } from "./int-type.js";
 interface Schedule {
     from?: Int;
     to?: Int;

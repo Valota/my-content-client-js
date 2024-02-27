@@ -1,3 +1,3 @@
-export declare type Int = number & {
+export type Int = number & {
     __int__: void;
 };

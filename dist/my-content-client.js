@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,18 +7,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PDFPage = exports.EditMessage = exports.PostMessage = exports.MyContentClient = void 0;
-const sha256 = require("crypto-js/sha256");
-const EncHex = require("crypto-js/enc-hex");
-const FormData = require("form-data");
-const node_fetch_1 = require("node-fetch");
-const fs = require("fs");
-const message_base_1 = require("./message-base");
-Object.defineProperty(exports, "PostMessage", { enumerable: true, get: function () { return message_base_1.PostMessage; } });
-Object.defineProperty(exports, "EditMessage", { enumerable: true, get: function () { return message_base_1.EditMessage; } });
-Object.defineProperty(exports, "PDFPage", { enumerable: true, get: function () { return message_base_1.PDFPage; } });
-const md5File = require("md5-file");
+import sha256 from 'crypto-js/sha256.js';
+import EncHex from 'crypto-js/enc-hex.js';
+import FormData from 'form-data';
+import fetch from 'node-fetch';
+import fs from 'node:fs';
+import { PostMessage, EditMessage, PDFPage } from './message-base.js';
+import md5File from 'md5-file';
 function hash(msg) {
     return EncHex.stringify(sha256(msg));
 }
@@ -45,6 +39,14 @@ class MyContentClient {
          * @var string
          */
         this.version = 'v1';
+        /**
+         * These are added to fetch (node-fetch) request. e.g. {"x-additional-header":"value"}
+         */
+        this.fetchRequestHeaders = {};
+        /**
+         * Additional options to be appended to all fetches (node-fetch). e.g.
+         */
+        this.fetchOptions = {};
         if (apiKey.length !== 32) {
             throw "API key should be exactly 32 characters long.";
         }
@@ -86,7 +88,7 @@ class MyContentClient {
             });
             //formData.append('file', fs.createReadStream('foo.txt'));
             //formData.append('blah', 42);
-            return (0, node_fetch_1.default)(`${this.url}/${this.version}/${endpoint}`, Object.assign(Object.assign({ method: method }, (hasData ? { body: formData } : {})), { headers: Object.assign(Object.assign({}, (hasData ? formData.getHeaders() : {})), { 'x-api-key': this.apiKey, 'x-api-hash': hash }) })).then((res) => {
+            return fetch(`${this.url}/${this.version}/${endpoint}`, Object.assign(Object.assign(Object.assign(Object.assign({}, this.fetchOptions), { method: method }), (hasData ? { body: formData } : {})), { headers: Object.assign(Object.assign(Object.assign({}, this.fetchRequestHeaders), (hasData ? formData.getHeaders() : {})), { 'x-api-key': this.apiKey, 'x-api-hash': hash }) })).then((res) => {
                 if (res.ok) {
                     return res.json();
                 }
@@ -314,4 +316,4 @@ class MyContentClient {
         });
     }
 }
-exports.MyContentClient = MyContentClient;
+export { MyContentClient, PostMessage, EditMessage, PDFPage };
